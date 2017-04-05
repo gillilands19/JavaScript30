@@ -24,6 +24,7 @@
     .panels {
       min-height:100vh;
       overflow: hidden;
+      display: flex;
     }
 
     .panel {
@@ -41,6 +42,11 @@
       font-size: 20px;
       background-size:cover;
       background-position:center;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
     }
 
 
@@ -54,7 +60,30 @@
       margin:0;
       width: 100%;
       transition:transform 0.5s;
+        flex: 1 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
+      
+      .panel > *:first-child{
+          transform: translateY(-100%);
+          
+      }
+      
+      .panel.open-active > *:first-child{
+          transform: translateY(0);
+          
+      }
+      
+      .panel > *:last-child{
+          transform: translateY(100%);
+      }
+      
+      .panel.open-active > *:last-child{
+          transform: translateY(0);
+          
+      }
 
     .panel p {
       text-transform: uppercase;
@@ -68,6 +97,8 @@
 
     .panel.open {
       font-size:40px;
+        /* will take up 5 times the amount of space as the rest. Think of it as ratios. Above the panels were displayed with a flex of 1. Now when each panel also has a class of open, it will be 5:1 */
+        flex: 5;
     }
 
     .cta {
@@ -107,6 +138,23 @@
   </div>
 
   <script>
+      
+      const panels = document.querySelectorAll('.panel');
+      
+      function toggleOpen() {
+          this.classList.toggle('open');
+      }
+      
+      function toggleActive(e) {
+          console.log(e.propertyName);
+          if (e.propertyName.includes('flex')) {
+              this.classList.toggle('open-active');
+          }
+      }
+      
+      /* The reason toggle open isnt called like "toggleOpen()" is because that would run on page load. we dont want to run the function but we want to say hey, when a click event happens go find the function and run it. */
+      panels.forEach(panel => panel.addEventListener('click', toggleOpen));
+      panels.forEach(panel => panel.addEventListener('transitionend', toggleActive));
 
   </script>
 
